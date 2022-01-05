@@ -69,7 +69,7 @@
         }
       }
     },
-    "net5.0/win10-x64": {
+    "net5.0/win-x64": {
       "Microsoft.NETCore.Platforms/5.0.0": {
         "type": "package",
         "compile": {
@@ -362,7 +362,7 @@
       }
     },
     "runtimes": {
-      "win10-x64": {
+      "win-x64": {
         "#import": []
       }
     }

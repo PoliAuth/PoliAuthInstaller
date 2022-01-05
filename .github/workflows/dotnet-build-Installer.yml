@@ -25,7 +25,7 @@ jobs:
       run: dotnet build ./PoliAuth_Installer.csproj -o ./dist
       
     - name: publish
-      run: dotnet publish -c Release -r win10-x64 -o ./dist
+      run: dotnet publish -c Release -r win10-x64 -o ./distWin
 
     - name: Git add
       run: git add .

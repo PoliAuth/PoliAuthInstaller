@@ -31,7 +31,7 @@ namespace PoliAuth_Installer
                     using (var client = new WebClient())
                     {
                         client.DownloadFile("https://github.com/PoliAuth/PoliAuthenticator/releases/download/Release/PoliAuthenticator.exe", destFileAuth);
-                        client.DownloadFile("https://github.com/PoliAuth/PoliAuthJumper/blob/main/dist/PoliAuth_Jumper.exe?raw=true", destFileJump);
+                        client.DownloadFile("https://github.com/PoliAuth/PoliAuthJumper/blob/main/distWin-x64/PoliAuth_Jumper.exe?raw=true", destFileJump);
                     }
                 }
                 catch (Exception ex)

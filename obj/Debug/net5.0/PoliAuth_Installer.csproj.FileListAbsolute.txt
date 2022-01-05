@@ -1,0 +1,16 @@
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/dist/PoliAuth_Installer
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/dist/PoliAuth_Installer.deps.json
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/dist/PoliAuth_Installer.runtimeconfig.json
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/dist/PoliAuth_Installer.runtimeconfig.dev.json
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/dist/PoliAuth_Installer.dll
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/dist/ref/PoliAuth_Installer.dll
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/dist/PoliAuth_Installer.pdb
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/obj/Debug/net5.0/PoliAuth_Installer.csproj.AssemblyReference.cache
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/obj/Debug/net5.0/PoliAuth_Installer.GeneratedMSBuildEditorConfig.editorconfig
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/obj/Debug/net5.0/PoliAuth_Installer.AssemblyInfoInputs.cache
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/obj/Debug/net5.0/PoliAuth_Installer.AssemblyInfo.cs
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/obj/Debug/net5.0/PoliAuth_Installer.csproj.CoreCompileInputs.cache
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/obj/Debug/net5.0/PoliAuth_Installer.dll
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/obj/Debug/net5.0/ref/PoliAuth_Installer.dll
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/obj/Debug/net5.0/PoliAuth_Installer.pdb
+/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/obj/Debug/net5.0/PoliAuth_Installer.genruntimeconfig.cache

@@ -1,13 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "Sq6hB4FZwuZqQ9gO0EjJnxBTo8zUfCxkGwGCvGKUhBMeIe/XfMwV8qkEagLoO/7IK+qUo4ghDHXSqCfKhqMD2w==",
+  "dgSpecHash": "IVU2OzlVB7+TcjekaDDAOX8sFj1o7OijIMaGgblgRtFKcKM9E5dnSasQJPRwj/zD2u9fvJ5BgYwcolkqrazc5g==",
   "success": true,
   "projectFilePath": "/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/PoliAuth_Installer.csproj",
   "expectedPackageFiles": [
     "/home/runner/.nuget/packages/microsoft.netcore.platforms/5.0.0/microsoft.netcore.platforms.5.0.0.nupkg.sha512",
     "/home/runner/.nuget/packages/microsoft.win32.registry/5.0.0/microsoft.win32.registry.5.0.0.nupkg.sha512",
     "/home/runner/.nuget/packages/system.security.accesscontrol/5.0.0/system.security.accesscontrol.5.0.0.nupkg.sha512",
-    "/home/runner/.nuget/packages/system.security.principal.windows/5.0.0/system.security.principal.windows.5.0.0.nupkg.sha512"
+    "/home/runner/.nuget/packages/system.security.principal.windows/5.0.0/system.security.principal.windows.5.0.0.nupkg.sha512",
+    "/home/runner/.nuget/packages/microsoft.netcore.app.runtime.win-x64/5.0.13/microsoft.netcore.app.runtime.win-x64.5.0.13.nupkg.sha512",
+    "/home/runner/.nuget/packages/microsoft.aspnetcore.app.runtime.win-x64/5.0.13/microsoft.aspnetcore.app.runtime.win-x64.5.0.13.nupkg.sha512",
+    "/home/runner/.nuget/packages/microsoft.netcore.app.host.win-x64/5.0.13/microsoft.netcore.app.host.win-x64.5.0.13.nupkg.sha512"
   ],
   "logs": []
 }

@@ -30,7 +30,7 @@ namespace PoliAuth_Installer
                 {
                     using (var client = new WebClient())
                     {
-                        client.DownloadFile("", destFileAuth);
+                        client.DownloadFile("https://github.com/PoliAuth/PoliAuthenticator/releases/download/Release/PoliAuthenticator.exe", destFileAuth);
                         client.DownloadFile("", destFileJump);
                     }
                 }

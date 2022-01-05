@@ -31,7 +31,7 @@ namespace PoliAuth_Installer
                     using (var client = new WebClient())
                     {
                         client.DownloadFile("https://github.com/PoliAuth/PoliAuthenticator/releases/download/Release/PoliAuthenticator.exe", destFileAuth);
-                        client.DownloadFile("", destFileJump);
+                        client.DownloadFile("https://github.com/PoliAuth/PoliAuthJumper/blob/main/dist/PoliAuth_Jumper.exe?raw=true", destFileJump);
                     }
                 }
                 catch (Exception ex)
@@ -59,7 +59,9 @@ namespace PoliAuth_Installer
                 key.SetValue("URL Protocol", "poliauth");
                 key.CreateSubKey(@"shell\open\command").SetValue("", "\"" + destFileJump + "\" \"%1\"");
                 Console.WriteLine("-- All Done! --");
-                Thread.Sleep(1000 * 5);
+		Console.WriteLine("To run PoliAuthenticator, open the folder " + destFolder + " and launch PoliAuthenticator.exe");
+                Console.ReadKey();
+	  
             }
             catch (Exception e)
             {

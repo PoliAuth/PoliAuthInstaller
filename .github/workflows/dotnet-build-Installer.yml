@@ -1,0 +1,40 @@
+name: dotnet-build-Installer.yml
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Git pull
+      run: git pull
+
+    - name: restore
+      run: dotnet restore ./PoliAuth_Installer.csproj
+      
+    - name: build
+      run: dotnet build ./PoliAuth_Installer.csproj -o ./dist
+
+    - name: Git add
+      run: git add .
+      
+    - name: Configure git (1)
+      run: git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      
+    - name: Configure git (2)
+      run: git config --global user.name "Github Action Bot"
+    
+    - name: Git commit
+      run: git commit -m "artifact" 
+      
+    - name: Git push
+      run: git push

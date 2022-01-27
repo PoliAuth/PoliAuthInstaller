@@ -36,7 +36,9 @@ namespace PoliAuth_Installer
                 }
                 catch (Exception ex)
                 {
+		    Console.WriteLine(ex);
                     Console.WriteLine("An error occurred while downloading files. Please retry running this installer");
+		    Console.ReadKey();
                     return;
                 }
                 Console.WriteLine("-- File downloaded in " + destFileAuth + " --");

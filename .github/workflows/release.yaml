@@ -56,7 +56,7 @@ jobs:
         run: |
           TAG_NAME=${{ github.ref }}
           gh release create $TAG_NAME \
-          ./artifacts/*.tar.gz \
+          ./artifacts/* \
           --title "Release $TAG_NAME" \
           --notes "New release of the project. Please find the artifacts attached below."
         env:

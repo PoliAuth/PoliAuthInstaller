@@ -1,4 +1,4 @@
-name: Release Pipeline
+name: Release
 
 on:
   push:
@@ -7,10 +7,13 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    name: Build and Publish
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [windows-latest, ubuntu-latest]
+        dotnet-version: ["7.0.x"]
+    runs-on: ${{ matrix.os }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -18,53 +21,59 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: "7.0.x"
+          dotnet-version: ${{ matrix.dotnet-version }}
 
       - name: Restore dependencies
         run: dotnet restore PoliAuthInstaller.sln
 
-      - name: Build and Package
-        run: |
-          dotnet build --configuration Release PoliAuthInstaller.sln
-          dotnet publish --configuration Release --output ./artifacts PoliAuthInstaller.sln
+      - name: Build
+        run: dotnet build --configuration Release --no-restore PoliAuthInstaller.sln
 
-      - name: Upload Artifacts
+      - name: Publish
+        run: dotnet publish --configuration Release --no-build --output ./publish PoliAuthInstaller.sln
+
+      - name: Create Artifact
+        run: |
+          mkdir artifacts
+          tar -czvf artifacts/${{ matrix.os }}.tar.gz -C ./publish .
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.os }}-artifacts
-          path: ./artifacts/
+          name: ${{ matrix.os }}
+          path: ./artifacts/${{ matrix.os }}.tar.gz
 
   release:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v3
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
         with:
-          path: ./artifacts/
+          path: ./artifacts
 
-      - name: Get Version from Tag
-        id: version
-        run: echo "::set-output name=version::${GITHUB_REF#refs/tags/}"
-
-      - name: Create GitHub Release
+      - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ steps.version.outputs.version }}
-          body: Release notes for ${{ steps.version.outputs.version }}
-          draft: false
-          prerelease: false
+          release_name: Release ${{ github.ref }}
+          body: |
+            New release of the project.
+            Please find the artifacts attached below.
 
-      - name: Upload Release Assets
-        uses: svenstaro/upload-release-action@v2
+      - name: Upload Release Asset for Windows
+        uses: actions/upload-release-asset@v1
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./artifacts/*
-          asset_name: Artifacts
-          tag: ${{ github.ref }}
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/windows-latest.tar.gz
+          asset_name: windows-latest.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload Release Asset for Linux
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/ubuntu-latest.tar.gz
+          asset_name: ubuntu-latest.tar.gz
+          asset_content_type: application/gzip

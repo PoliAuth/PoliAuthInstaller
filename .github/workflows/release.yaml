@@ -32,16 +32,19 @@ jobs:
       - name: Publish
         run: dotnet publish --configuration Release --no-build --output ./publish PoliAuthInstaller.sln
 
-      - name: Create Artifact
-        run: |
-          mkdir artifacts
-          tar -czvf artifacts/${{ matrix.os }}.tar.gz -C ./publish .
-
-      - name: Upload artifacts
+      - name: Upload EXE artifact (Windows)
+        if: matrix.os == 'windows-latest'
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.os }}
-          path: ./artifacts/${{ matrix.os }}.tar.gz
+          name: exe-windows
+          path: ./publish/*.exe
+
+      - name: Upload DLL artifact (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v2
+        with:
+          name: dll-linux
+          path: ./publish/*.dll
 
   release:
     needs: build
@@ -50,16 +53,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Download artifacts
+      - name: Download EXE artifact (Windows)
         uses: actions/download-artifact@v2
         with:
-          path: ./artifacts
+          name: exe-windows
+          path: ./artifacts/exe-windows
+
+      - name: Download DLL artifact (Linux)
+        uses: actions/download-artifact@v2
+        with:
+          name: dll-linux
+          path: ./artifacts/dll-linux
 
       - name: Create Release
         run: |
           TAG_NAME=${{ github.ref }}
           gh release create $TAG_NAME \
-          ./artifacts/* \
+          ./artifacts/exe-windows/*.exe \
+          ./artifacts/dll-linux/*.dll \
           --title "Release $TAG_NAME" \
           --notes "New release of the project. Please find the artifacts attached below."
         env:

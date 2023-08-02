@@ -67,7 +67,7 @@ jobs:
 
       - name: Create Release
         run: |
-          TAG_NAME=${{ github.ref }}
+          TAG_NAME=${GITHUB_REF##*/}
           gh release create $TAG_NAME \
           ./artifacts/exe-windows/*.exe \
           ./artifacts/dll-linux/*.dll \

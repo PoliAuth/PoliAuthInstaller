@@ -31,7 +31,7 @@ jobs:
 
       - name: Publish Windows self-contained EXE
         if: matrix.os == 'windows-latest'
-        run: dotnet publish --configuration Release --no-build --runtime win-x64 --output ./publish PoliAuthInstaller.sln
+        run: dotnet publish --configuration Release --runtime win-x64 --output ./publish PoliAuthInstaller.sln
 
       - name: Publish Linux DLL
         if: matrix.os == 'ubuntu-latest'

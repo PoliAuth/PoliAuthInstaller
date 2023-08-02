@@ -52,15 +52,22 @@ jobs:
         with:
           path: ./artifacts
 
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+          sudo apt-add-repository https://cli.github.com/packages
+          sudo apt update
+          sudo apt install gh
+
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            New release of the project.
-            Please find the artifacts attached below.
+        run: |
+          TAG_NAME=${{ github.ref }}
+          gh release create $TAG_NAME \
+          ./artifacts/*.tar.gz \
+          --title "Release $TAG_NAME" \
+          --notes "New release of the project. Please find the artifacts attached below."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release Asset for Windows
         uses: actions/upload-release-asset@v1

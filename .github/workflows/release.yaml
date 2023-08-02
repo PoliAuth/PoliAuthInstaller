@@ -60,3 +60,11 @@ jobs:
           body: Release notes for ${{ steps.version.outputs.version }}
           draft: false
           prerelease: false
+
+      - name: Upload Release Assets
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./artifacts/*
+          asset_name: Artifacts
+          tag: ${{ github.ref }}

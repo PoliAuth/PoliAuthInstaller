@@ -1,2 +1,0 @@
-/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/distWin-x64/PoliAuth_Installer.pdb
-/home/runner/work/PoliAuthInstaller/PoliAuthInstaller/distWin-x64/PoliAuth_Installer.exe

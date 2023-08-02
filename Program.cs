@@ -11,7 +11,7 @@ namespace PoliAuth_Installer
     class Program
     {
         [STAThread]
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             try
             {
@@ -25,22 +25,17 @@ namespace PoliAuth_Installer
                 var destFileAuth = System.IO.Path.Combine(destFolder, fileNameAuth);
                 var sourceFileJump = System.IO.Path.Combine(Directory.GetCurrentDirectory(), fileNameJump);
                 var destFileJump = System.IO.Path.Combine(destFolder, fileNameJump);
-		Console.WriteLine("Downloading files, please wait...");
-                try
-                {
-                    using (var client = new WebClient())
-                    {
-                        client.DownloadFile("https://github.com/PoliAuth/PoliAuthenticator/releases/latest/download/PoliAuthenticator.exe", destFileAuth);
-                        client.DownloadFile("https://github.com/PoliAuth/PoliAuthJumper/blob/main/distWin-x64/PoliAuth_Jumper.exe?raw=true", destFileJump);
-                    }
-                }
-                catch (Exception ex)
-                {
-		    Console.WriteLine(ex);
-                    Console.WriteLine("An error occurred while downloading files. Please retry running this installer");
-		    Console.ReadKey();
-                    return;
-                }
+
+                Console.WriteLine("Downloading files, please wait...");
+
+                Console.WriteLine("Downloading PoliAuthenticator.exe...");
+                await DownloadFileAsync("https://github.com/PoliAuth/PoliAuthenticator/releases/latest/download/PoliAuthenticator.exe", destFileAuth);
+
+                Console.WriteLine("\nDownloading PoliAuth_Jumper.exe...");
+                await DownloadFileAsync("https://github.com/PoliAuth/PoliAuthJumper/blob/main/distWin-x64/PoliAuth_Jumper.exe?raw=true", destFileJump);
+
+                Console.WriteLine("\nDownload completed!");
+
                 Console.WriteLine("-- File downloaded in " + destFileAuth + " --");
                 //Start and init db
                 Console.WriteLine("-- Initializing DB --");
@@ -56,14 +51,14 @@ namespace PoliAuth_Installer
                 Process.Start(info);
                 //Create Registry
                 Console.WriteLine("-- Setting Registry Key --");
-                var KeyTest = Registry.CurrentUser.OpenSubKey("Software", true).OpenSubKey("Classes", true);
-                RegistryKey key = KeyTest.CreateSubKey("poliauth");
-                key.SetValue("URL Protocol", "poliauth");
-                key.CreateSubKey(@"shell\open\command").SetValue("", "\"" + destFileJump + "\" \"%1\"");
+                var KeyTest = Registry.CurrentUser.OpenSubKey("Software", true)?.OpenSubKey("Classes", true);
+                RegistryKey? key = KeyTest?.CreateSubKey("poliauth");
+                key?.SetValue("URL Protocol", "poliauth");
+                key?.CreateSubKey(@"shell\open\command").SetValue("", "\"" + destFileJump + "\" \"%1\"");
                 Console.WriteLine("-- All Done! --");
-		Console.WriteLine("To run PoliAuthenticator, open the folder " + destFolder + " and launch PoliAuthenticator.exe");
+                Console.WriteLine("To run PoliAuthenticator, open the folder " + destFolder + " and launch PoliAuthenticator.exe");
                 Console.ReadKey();
-	  
+
             }
             catch (Exception e)
             {
@@ -73,5 +68,52 @@ namespace PoliAuth_Installer
                 Console.ReadKey();
             }
         }
+        private static async Task DownloadFileAsync(string url, string destinationPath)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                using (HttpResponseMessage response = await client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
+                {
+                    response.EnsureSuccessStatusCode();
+
+                    using (Stream contentStream = await response.Content.ReadAsStreamAsync(), fileStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                    {
+                        var totalBytes = response.Content.Headers.ContentLength.HasValue ? response.Content.Headers.ContentLength.Value : -1L;
+                        var totalReadBytes = 0L;
+                        var buffer = new byte[8192];
+                        var isMoreToRead = true;
+
+                        do
+                        {
+                            var readBytes = await contentStream.ReadAsync(buffer, 0, buffer.Length);
+                            if (readBytes == 0)
+                            {
+                                isMoreToRead = false;
+                                TriggerProgressChanged(totalBytes, totalBytes); // Trigger 100% progress
+                                continue;
+                            }
+
+                            await fileStream.WriteAsync(buffer, 0, readBytes);
+
+                            totalReadBytes += readBytes;
+                            TriggerProgressChanged(totalReadBytes, totalBytes);
+                        } while (isMoreToRead);
+                    }
+                }
+            }
+        }
+
+        private static void TriggerProgressChanged(long totalReadBytes, long totalBytes)
+        {
+            double percentage = (double)totalReadBytes / totalBytes * 100;
+            int totalBars = 50;
+            int filledBars = (int)(totalBars * percentage / 100);
+
+            Console.Write("\r[");
+            Console.Write(new string('=', filledBars));
+            Console.Write(new string(' ', totalBars - filledBars));
+            Console.Write($"] {percentage:0.00}%");
+        }
     }
+
 }

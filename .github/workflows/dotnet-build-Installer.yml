@@ -1,43 +1,38 @@
 name: dotnet-build-Installer.yml
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Git pull
-      run: git pull
+      - name: Git pull
+        run: git pull
 
-    - name: restore
-      run: dotnet restore ./PoliAuth_Installer.csproj
-      
-    - name: build
-      run: dotnet build ./PoliAuth_Installer.csproj -o ./dist
-      
-    - name: publish
-      run: dotnet publish -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true --self-contained true -o ./distWin-x64
+      - name: restore
+        run: dotnet restore ./PoliAuth_Installer.csproj
 
-    - name: Git add
-      run: git add .
-      
-    - name: Configure git (1)
-      run: git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      
-    - name: Configure git (2)
-      run: git config --global user.name "Github Action Bot"
-    
-    - name: Git commit
-      run: git commit -m "artifact" 
-      
-    - name: Git push
-      run: git push
+      - name: build
+        run: dotnet build ./PoliAuth_Installer.csproj -o ./dist
+
+      - name: publish
+        run: dotnet publish -r win-x64 /p:PublishSingleFile=true /p:IncludeNativeLibrariesForSelfExtract=true --self-contained true -o ./distWin-x64
+
+      - name: Git add
+        run: git add .
+
+      - name: Configure git (1)
+        run: git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Configure git (2)
+        run: git config --global user.name "Github Action Bot"
+
+      - name: Git commit
+        run: git commit -m "artifact"
+
+      - name: Git push
+        run: git push
